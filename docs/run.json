@@ -1,4 +1,23 @@
 {
-  "updated": "2026-11-15 09:38 UTC",
-  "results": []
+  "updated": "2026-11-15 09:58 UTC",
+  "results": [
+    {
+      "model": "openai/gpt-oss-120b",
+      "slug": "gpt-oss-120b",
+      "status": "ok",
+      "seconds": 5.6,
+      "tokens": 3345,
+      "check": "4 of 4",
+      "error": ""
+    },
+    {
+      "model": "openai/gpt-oss-20b",
+      "slug": "gpt-oss-20b",
+      "status": "ok",
+      "seconds": 2.3,
+      "tokens": 2660,
+      "check": "4 of 4",
+      "error": ""
+    }
+  ]
 }

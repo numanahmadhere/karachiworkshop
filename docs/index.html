@@ -6,13 +6,13 @@ button{border:1px solid #bbb;background:#eee;padding:8px 14px;cursor:pointer}
 button.on{background:#0b1f3a;color:#fff;border-color:#0b1f3a}
 iframe{width:100%;height:80vh;border:1px solid #ccc;margin-top:8px}
 </style></head><body><h2 style="margin:0 0 6px">My AI dashboards</h2>
-<p class="stats">Updated: 2026-11-15 09:38 UTC | Models: none</p>
-<div id="tabs"><button onclick="go(0)">Without AI</button><button onclick="go(1)">The prompt we sent</button></div>
+<p class="stats">Updated: 2026-11-15 09:58 UTC | Models: gpt-oss-120b, gpt-oss-20b</p>
+<div id="tabs"><button onclick="go(0)">Without AI</button><button onclick="go(1)">With AI: gpt-oss-120b</button><button onclick="go(2)">With AI: gpt-oss-20b</button><button onclick="go(3)">Model race</button><button onclick="go(4)">The prompt we sent</button><button onclick="go(5)">Code: gpt-oss-120b</button><button onclick="go(6)">Code: gpt-oss-20b</button></div>
 <iframe id="f" sandbox="allow-scripts"></iframe>
 <script>
-var pages=["plain.html", "prompt.txt"];
+var pages=["plain.html", "ai-gpt-oss-120b.html", "ai-gpt-oss-20b.html", "compare.html", "prompt.txt", "code-gpt-oss-120b.txt", "code-gpt-oss-20b.txt"];
 function go(i){var b=document.querySelectorAll("#tabs button");
 for(var k=0;k<b.length;k++){b[k].className=(k==i?"on":"");}
 document.getElementById("f").src=pages[i];}
-go(0);
+go(1);
 </script></body></html>
