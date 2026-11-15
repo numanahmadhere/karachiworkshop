@@ -1,0 +1,31 @@
+You are a senior data analyst and front-end developer. Return ONE complete, self-contained HTML page and nothing else. No explanation, no markdown fences. Rules: put all CSS in a style tag; do not load any external scripts, fonts, images or stylesheets; you may use a small amount of plain JavaScript; draw charts with HTML and CSS or inline SVG; use ONLY the DATA and FACTS provided; write every number exactly as it appears in FACTS (same digits, with commas, no abbreviations); never invent numbers. The page must contain, in this order: (1) a clear title; (2) a row of 4 headline numbers taken from FACTS; (3) two different charts that help answer the Focus; (4) a section called Key insights with 3 findings, each quoting specific numbers; (5) a section called Recommended actions with 3 actions written for the Audience; (6) a table of all the data rows with a dropdown that filters the rows by one text column, using plain JavaScript. Keep the code compact, under 220 lines. Make it look polished on a screen about 900 pixels wide.
+
+Build the dashboard in this style: clean, modern, light background
+It is for: a hiring manager
+Focus on: which skills and cities pay the most
+
+FACTS (calculated by code, exact):
+Rows: 12
+Average Monthly Salary (PKR): 360,000
+Average Days Open: 16
+Highest Monthly Salary (PKR): 560,000 (ML Engineer)
+Lowest Monthly Salary (PKR): 200,000 (Marketing Analyst)
+Average Monthly Salary (PKR) by City: Islamabad 510,000; Lahore 450,000; Remote 290,000; Karachi 274,000
+Average Monthly Salary (PKR) by Main Skill: Machine Learning 520,000; Python 505,000; Product 480,000; SQL 360,000; Power BI 340,000; Prompting 300,000
+Count by City: Karachi 5; Lahore 3; Remote 2; Islamabad 2
+Count by Main Skill: SQL 2; Python 2; Excel 2; Prompting 1; Machine Learning 1; Google Sheets 1
+
+DATA (columns separated by |):
+Role | Company | City | Monthly Salary (PKR) | Main Skill | Work Type | Days Open
+Data Analyst | Alpha Labs | Karachi | 220000 | SQL | Hybrid | 12
+AI Engineer | Bluewave Retail | Lahore | 450000 | Python | Onsite | 30
+Business Analyst | Crescent Bank | Karachi | 260000 | Excel | Onsite | 8
+Prompt Engineer | Delta Digital | Remote | 300000 | Prompting | Remote | 5
+Data Scientist | Ember Health | Islamabad | 520000 | Machine Learning | Hybrid | 21
+Marketing Analyst | Falcon Foods | Karachi | 200000 | Google Sheets | Onsite | 14
+BI Developer | Granite Telecom | Lahore | 340000 | Power BI | Hybrid | 9
+AI Product Manager | Harbor Logistics | Karachi | 480000 | Product | Hybrid | 18
+Automation Specialist | Indigo Retail | Remote | 280000 | Apps Script | Remote | 6
+Data Engineer | Jade Finance | Islamabad | 500000 | SQL | Onsite | 27
+Operations Analyst | Kite Commerce | Karachi | 210000 | Excel | Onsite | 11
+ML Engineer | Lumen Systems | Lahore | 560000 | Python | Hybrid | 33

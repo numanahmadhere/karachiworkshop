@@ -1,0 +1,133 @@
+name: Build AI dashboard
+
+on:
+  workflow_dispatch:        # lets you press the Run workflow button
+  # Remove the # at the start of the next three lines to refresh every day:
+  # schedule:
+  #   - cron: "0 4 * * *"
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  # Job 1: read the data and calculate the facts with code
+  prepare:
+    name: "1. Prepare (read data, calculate facts)"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get your code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Read the data and calculate the facts
+        env:
+          DATA_CSV_URL: ${{ vars.DATA_CSV_URL }}
+          PROMPT_CSV_URL: ${{ vars.PROMPT_CSV_URL }}
+        run: python build_dashboard.py prepare
+      - name: Pass the results to the next jobs
+        uses: actions/upload-artifact@v4
+        with:
+          name: prepared
+          path: work/
+
+  # Job 2A: the dashboard WITHOUT AI (runs at the same time as the AI jobs)
+  plain:
+    name: "2A. Without AI (plain code)"
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get your code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Get the prepared data
+        uses: actions/download-artifact@v4
+        with:
+          name: prepared
+          path: work/
+      - name: Build the Without AI dashboard
+        run: python build_dashboard.py plain
+      - name: Hand over the result
+        uses: actions/upload-artifact@v4
+        with:
+          name: result-plain
+          path: out/
+
+  # Job 2B: the dashboard WITH AI, once per model, all at the same time
+  ai:
+    name: "2B. With AI (${{ matrix.slug }})"
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - model: openai/gpt-oss-120b
+            slug: gpt-oss-120b
+          - model: openai/gpt-oss-20b
+            slug: gpt-oss-20b
+    steps:
+      - name: Get your code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Get the prepared data
+        uses: actions/download-artifact@v4
+        with:
+          name: prepared
+          path: work/
+      - name: Ask the AI and check its numbers
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          MODEL: ${{ matrix.model }}
+          SLUG: ${{ matrix.slug }}
+        run: python build_dashboard.py ai
+      - name: Hand over the result
+        uses: actions/upload-artifact@v4
+        with:
+          name: result-ai-${{ matrix.slug }}
+          path: out/
+
+  # Job 3: combine everything and save it to your repo
+  publish:
+    name: "3. Publish (combine and save)"
+    needs: [prepare, plain, ai]
+    if: ${{ always() && needs.prepare.result == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # lets this job save the dashboards to your repo
+    steps:
+      - name: Get your code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Get the prepared data
+        uses: actions/download-artifact@v4
+        with:
+          name: prepared
+          path: work/
+      - name: Get every result
+        uses: actions/download-artifact@v4
+        with:
+          pattern: result-*
+          path: results/
+      - name: Combine the results into your website
+        run: python build_dashboard.py publish
+      - name: Save the dashboards to your repo
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add docs
+          git diff --cached --quiet || git commit -m "Update dashboards"
+          git push
